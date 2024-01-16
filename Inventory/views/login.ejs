@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Milktea</title>
+    <link rel="shortcut icon" href="/Milkteas.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <script defer src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Requests/loginreq.js"></script>
+</head>
+<style>
+
+    .loadingContent{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.278);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        display: none;
+    }
+    .loader {
+  width: 400px;
+  height: 300px;
+  display: block;
+  position: relative;
+}
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 400px;
+  height: 400px;
+  border: 5px solid #3B71CA;
+  border-radius: 20px;
+  position: absolute;
+  animation: animloader 2s ease-in-out infinite;
+}
+
+.loader::after {
+  border-color: #3B71CA;
+  animation-delay: .5s;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+    
+</style>
+<body>
+    <div class="loadingContent">
+                <span class="loader"></span>
+        </div>
+    <div class="container vh-100 w-100 d-flex justify-content-center align-items-center">
+        
+
+        <div class="content rounded-4 h-75 w-50 d-flex justify-content-center align-items-center flex-column bg-white shadow p-5">
+            <img src="/Milkteas.png" style="width: 200px; height: 200px;" alt="milktea logo" />
+            <div class="alert alert-dismissible fade d-none mt-1 w-100 " role="alert">
+          </div>
+            <form class="p-5 w-100" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="empID">
+                <label for="empID">Employee ID</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control w-100" id="password">
+                <label for="password">Password</label>
+            </div>
+            <a href="#"><p class="text-primary text-end mt-3">Forgot password?</p></a>
+
+                <button class="btn btn-primary w-100 login" type="button">Sign in</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

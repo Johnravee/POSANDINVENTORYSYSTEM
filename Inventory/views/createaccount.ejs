@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New administrator | Milktea</title>
+    <link rel="shortcut icon" href="/Milkteas.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <script defer src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <script defer  src="/javascript/invoice&EmployeeIDGenerator.js"></script>
+    <script defer src="/Requests/createaccountreq.js"></script>
+    
+</head>
+<style>
+
+    .loadingContent{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.278);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        display: none;
+    }
+    .loader {
+  width: 100px;
+  height: 300px;
+  display: block;
+  position: relative;
+}
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 200px;
+  height: 200px;
+  border: 5px solid #3B71CA;
+  border-radius: 20px;
+  position: absolute;
+  animation: animloader 2s ease-in-out infinite;
+}
+
+.loader::after {
+  border-color: #3B71CA;
+  animation-delay: .5s;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+    
+</style>
+<body>
+    <div class="loadingContent">
+                <span class="loader"></span>
+        </div>
+    <main class="cons d-flex flex-row">   
+        
+        <aside class="col-auto vh-100 w-25 d-flex bg-dark align-items-center flex-column border-end shadow-sm sticky-top">
+            <div class="m-5 text-center d-flex justify-content-start align-items-center w-100 flex-wrap">
+                <img class="ms-5" src="/Milkteas.png" alt="MilkTea logo" style="height: 100; width: 50px;">
+                <span class="fs-5 ms-4 fw-bolder text-white">Milktea</span>
+            </div>
+        
+            <div class="list-group  w-100 d-flex justify-content-evenly rounded-0 link-offset-1-hover">
+                <a href="/dashboard" class="list-group-item list-group-item-action p-3 bg-dark text-white border-0" ><i class="bi bi-speedometer2 m-2"></i><span
+                        class="m-1 fs-6 fw-bold">Dashboard</span></a>
+                <a href="/profile" class="list-group-item list-group-item-action p-3 border-0 bg-dark text-white  "><i
+                        class="bi bi-person-fill m-2"></i><span class="m-1 fs-6 fw-bold">Profile</span></a>
+                <a href="/createaccount" class="list-group-item list-group-item-action p-3 bg-dark text-white" style="border-left: 8px solid blue;
+                    border-right: none; border-bottom: none ; border-top: none;"><i
+                        class="bi bi-person-plus-fill m-2"></i><span class="m-1 fs-6 fw-bold">New admin</span></a>
+                <a href="/employees" class="list-group-item list-group-item-action p-3 border-0  bg-dark text-white "><i
+                        class="bi bi-people-fill m-2"></i><span class="m-1 fs-6 fw-bold">Employee's</span></a>
+                <a href="/administrators" class="list-group-item list-group-item-action p-3 border-0  bg-dark text-white "><i
+                        class="bi bi-people-fill m-2"></i><span class="m-1 fs-6 fw-bold">Administrator's</span></a>
+                <a href="/products" class="list-group-item list-group-item-action p-3 border-0  bg-dark text-white "><i class="bi bi-receipt m-2"></i><span
+                        class="m-1 fs-6 fw-bold">Products</span></a>
+                
+            </div>
+        </aside>
+
+
+    <section class="container">
+        <div class="container-fluid h-100 w-100 d-flex justify-content-center align-items-center ">
+            <form action="/newAdminreg" method="post" class="h-100 w-100 border-black" id="form">
+                <div class="container p-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="form-container shadow p-5 rounded-1">
+                                <h2>Registration Form</h2>
+                                <form method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" class="form-control inputs" id="firstName" name="firstName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="middleName">Middle Name</label>
+                                        <input type="text" class="form-control inputs" id="middleName" name="middleName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" class="form-control inputs" id="lastName" name="lastName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control inputs" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="employeeID">Employee ID</label>
+                                        <input type="text" class="form-control fw-bolder" id="employeeID" name="employeeID" disabled required style="background-color: #fff; cursor: not-allowed; color: rgba(128, 128, 128, 0.594);">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="invoiceNumber">Invoice Number</label>
+                                        <input type="text" class="form-control fw-bolder" id="invoiceNumber" name="invoiceNumber" disabled required style="background-color: #fff; cursor: not-allowed; color: rgba(128, 128, 128, 0.594);">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Contact">Contact Number</label>
+                                        <input type="text" class="form-control " id="Contact" name="Contact"  required
+                                           >
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Birthdate">Birthdate</label>
+                                        <input type="date" class="form-control " id="Birthdate" name="Birthdate"  required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="jobPosition">Job Position</label>
+                                        <select class="form-control" id="jobPosition" name="jobPosition" required>
+                                            <option value="" disabled>Select Job Position</option>
+                                            <option value="Cashier">Cashier</option>
+                                            <option value="Accountant">Accountant</option>
+                                            <option value="Store Manager">Store Manager</option>
+                                            <option value="Head Manager">Head Manager</option>
+                                            <option value="Administrator">Administrator</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control " id="password" name="password"  required>
+                                    </div>
+                                    
+                                    <div class="btn d-flex justify-content-center m-1">
+                                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+    <div id="alertContainer" class="d-flex justify-content-center align-items-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+
+    </main>
+</body>
+
+</html>
