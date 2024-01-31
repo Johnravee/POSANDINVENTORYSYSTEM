@@ -1,5 +1,6 @@
 const orderDisplay = document.querySelector(".orderDisplay");
 const receiptProductList = document.querySelector(".OrdersList");
+const voidingItems = document.querySelector(".currentItems");
 const productLists = [];
 const amountPaid = [];
 
@@ -50,6 +51,7 @@ const displayListofProducts = () => {
 
         // Append the original li element to orderDisplay
         receiptProductList.appendChild(li);
+        voidingItems.innerHTML = receiptProductList.innerHTML;
         orderDisplay.innerHTML = receiptProductList.innerHTML;
         
     });
@@ -175,9 +177,6 @@ const DateAndTime = () =>{
 };
 
 
-
-
-
 // Handle printing the receipt
 const printReceipt = () => {
 
@@ -293,4 +292,23 @@ body{
   
   
 };
+
+
+const monitorProductDisplay = () =>{
+    const changeBtns = document.querySelectorAll(".changeBtns");
+    const observer = new MutationObserver(()=>{
+        changeBtns.forEach(btn =>{
+            if(productLists.length > 0 ) {
+                console.log(true);
+                btn.removeAttribute("disabled")
+            }
+            else btn.setAttribute("disabled", " ")
+        })
+    });
+
+    observer.observe(document.querySelector(".orderDisplay"),{
+        childList: true
+    })
+};
+monitorProductDisplay();
 
