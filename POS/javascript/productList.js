@@ -1,6 +1,7 @@
 const orderDisplay = document.querySelector(".orderDisplay");
 const receiptProductList = document.querySelector(".OrdersList");
-const voidingItems = document.querySelector(".currentItems");
+const currentvoidingItems = document.querySelector(".currentItems");
+const voidItems = document.querySelector(".voidedItems");
 const productLists = [];
 const amountPaid = [];
 
@@ -43,6 +44,9 @@ const displayListofProducts = () => {
 
         const li = document.createElement("li");
         li.classList.add("listStyles");
+        li.classList.add("list-group-item-action");
+        li.classList.add("p-2");
+        li.classList.add("liChild");
         li.innerHTML = productNode;
 
         
@@ -51,7 +55,7 @@ const displayListofProducts = () => {
 
         // Append the original li element to orderDisplay
         receiptProductList.appendChild(li);
-        voidingItems.innerHTML = receiptProductList.innerHTML;
+        currentvoidingItems.innerHTML = receiptProductList.innerHTML;
         orderDisplay.innerHTML = receiptProductList.innerHTML;
         
     });
@@ -130,17 +134,7 @@ const CustomerChange = () =>{
                  document.querySelector('#Date').textContent = ` ${dateAndTime.date}`;
                 printReceipt();     
             }
-            /*else{
-                let computation = totalAmountOfProduct - amountPaidSummary;
-                 document.querySelector(".totalAmountDisplay").textContent = computation;
-                 document.querySelector('#CustCash').textContent = `Cash: ${parseFloat(amountPaidSummary).toFixed(2)}`;
-                 document.querySelector('#Change').textContent = `Change: ${parseFloat(computation).toFixed(2)}`;
-                 document.querySelector('#TotalAmnt').textContent = `Change: ${parseFloat(totalAmountOfProduct).toFixed(2)}`;
-                 document.querySelector('#Transaction').textContent = ` #:${transactionNumber}`;
-                 document.querySelector('#Time').textContent = ` Time:${dateAndTime.time}`;
-                 document.querySelector('#Date').textContent = ` Date:${dateAndTime.date}`;
-                 printReceipt();
-            }*/
+            
             
         })
     })
@@ -293,13 +287,12 @@ body{
   
 };
 
-
+// Handle product monitoring
 const monitorProductDisplay = () =>{
     const changeBtns = document.querySelectorAll(".changeBtns");
     const observer = new MutationObserver(()=>{
         changeBtns.forEach(btn =>{
             if(productLists.length > 0 ) {
-                console.log(true);
                 btn.removeAttribute("disabled")
             }
             else btn.setAttribute("disabled", " ")
@@ -311,4 +304,43 @@ const monitorProductDisplay = () =>{
     })
 };
 monitorProductDisplay();
+
+
+// Handle adding disabled ul
+const voiding = () =>{
+    currentvoidingItems.classList.add("disabledUl");
+    voidItems.classList.add("disabledUl");
+    
+}
+
+// Handle all product to void
+const voidCandidate = () =>{
+
+    currentvoidingItems.classList.remove("disabledUl");
+    voidItems.classList.add("disabledUl");
+    const curretulChilds = currentvoidingItems.querySelectorAll(".liChild");
+    const arrayOfUlChilds = Array.from(curretulChilds);
+    
+    arrayOfUlChilds.forEach(ulchild => {
+        ulchild.addEventListener("click", (e)=>{
+             voidItems.appendChild(e.currentTarget);
+        })
+    })
+    
+}
+
+//Handle passing back the void candidates
+const removeVoidCandidate = () => {
+    currentvoidingItems.classList.add("disabledUl");
+    voidItems.classList.remove("disabledUl");
+    const modalvoidUl = document.querySelector(".voidedItems");
+    const modalvoidItems = modalvoidUl.querySelectorAll(".liChild"); 
+    const arrayUlVoidingItems = Array.from(modalvoidItems);
+    arrayUlVoidingItems.forEach(ulchild => {
+            ulchild.addEventListener("click", (e)=>{
+             currentvoidingItems.appendChild(e.currentTarget);
+             
+        })
+    })
+}
 
