@@ -344,3 +344,27 @@ const removeVoidCandidate = () => {
     })
 }
 
+// Handle product removes 
+const voidProducts = () => {
+    const modalvoidUl = document.querySelector(".voidedItems");
+    const modalvoidItems = modalvoidUl.querySelectorAll(".liChild");
+
+    modalvoidItems.forEach(item => {
+        const productName = item.querySelector("span:nth-child(2)").textContent;
+
+        
+        const itemsToRemove = productLists.findIndex(product => product.productname === productName);
+
+        if(itemsToRemove !== -1) productLists.splice(itemsToRemove, 1);
+
+        // Remove the item from the voidedItems list
+        modalvoidUl.removeChild(item);
+    });
+
+    // Update the display
+    displayListofProducts();
+    totalAmount();
+};
+    
+
+
