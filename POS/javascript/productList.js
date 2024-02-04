@@ -2,8 +2,8 @@ const orderDisplay = document.querySelector(".orderDisplay");
 const receiptProductList = document.querySelector(".OrdersList");
 const currentvoidingItems = document.querySelector(".currentItems");
 const voidItems = document.querySelector(".voidedItems");
-const productLists = [];
-const amountPaid = [];
+let productLists = [];
+let amountPaid = [];
 
 
 // add product to array
@@ -175,7 +175,7 @@ const DateAndTime = () =>{
 
 // Handle printing the receipt
 const printReceipt = () => {
-
+  const changeBtns = document.querySelectorAll(".changeBtns");
   const ReceiptContent = document.querySelector('.ReceiptContent');
   
   // Set the desired print width in pixels
@@ -284,8 +284,21 @@ body{
   printWindow.document.write('</body></html>');
   printWindow.document.close();
   printWindow.print();
-  printWindow.close();
   
+//   Disable btn when printing
+ changeBtns.forEach(btn =>{
+            
+                btn.disabled = true
+        })
+
+
+  productLists = [];
+  amountPaid = [];
+  document.querySelector(".totalAmountDisplay").textContent = "0";
+  printWindow.close();
+  location.reload();
+ 
+    
  
   
 };
@@ -294,11 +307,16 @@ body{
 const monitorProductDisplay = () =>{
     const changeBtns = document.querySelectorAll(".changeBtns");
     const observer = new MutationObserver(()=>{
-        changeBtns.forEach(btn =>{
-            if(productLists.length > 0 ) btn.removeAttribute("disabled")
-            else btn.setAttribute("disabled", " ")
-    
+
+        if(productLists.length > 0){
+            changeBtns.forEach(btn =>{
+            
+                btn.disabled = false
+              
         })
+        
+        }
+        
     });
 
     observer.observe(document.querySelector(".orderDisplay"),{
