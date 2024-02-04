@@ -132,6 +132,8 @@ const CustomerChange = () =>{
                  document.querySelector('#Transaction').textContent = `#:${transactionNumber}`;
                  document.querySelector('#Time').textContent = ` ${dateAndTime.time}`;
                  document.querySelector('#Date').textContent = ` ${dateAndTime.date}`;
+                 document.querySelector(".totalAmountDisplay").textContent = `Change: ${parseFloat(computation).toFixed(2)}`;
+                 document.querySelector(".amountLabel").textContent = "";
                 printReceipt();     
             }
             
@@ -284,6 +286,7 @@ body{
   printWindow.print();
   printWindow.close();
   
+ 
   
 };
 
@@ -292,10 +295,9 @@ const monitorProductDisplay = () =>{
     const changeBtns = document.querySelectorAll(".changeBtns");
     const observer = new MutationObserver(()=>{
         changeBtns.forEach(btn =>{
-            if(productLists.length > 0 ) {
-                btn.removeAttribute("disabled")
-            }
+            if(productLists.length > 0 ) btn.removeAttribute("disabled")
             else btn.setAttribute("disabled", " ")
+    
         })
     });
 
@@ -305,51 +307,76 @@ const monitorProductDisplay = () =>{
 };
 monitorProductDisplay();
 
-
-// Handle adding disabled ul
-const voiding = () =>{
-    currentvoidingItems.classList.add("disabledUl");
-    voidItems.classList.add("disabledUl");
-    
-}
-
-// Handle all product to void
-const voidCandidate = () =>{
-
-    currentvoidingItems.classList.remove("disabledUl");
-    voidItems.classList.add("disabledUl");
+//Handle Voiding System
+const obServer = () =>{
+// Monitor the void Candidate
+const currentVoidItemsMonitor = new MutationObserver(()=>{
     const curretulChilds = currentvoidingItems.querySelectorAll(".liChild");
     const arrayOfUlChilds = Array.from(curretulChilds);
-    
-    arrayOfUlChilds.forEach(ulchild => {
-        ulchild.addEventListener("click", (e)=>{
-             voidItems.appendChild(e.currentTarget);
-        })
-    })
-    
-}
+   const deleteVoidItems = document.querySelector(".deleteVoidItems");
 
-//Handle passing back the void candidates
-const removeVoidCandidate = () => {
-    currentvoidingItems.classList.add("disabledUl");
-    voidItems.classList.remove("disabledUl");
-    const modalvoidUl = document.querySelector(".voidedItems");
-    const modalvoidItems = modalvoidUl.querySelectorAll(".liChild"); 
+    if(arrayOfUlChilds.length > 0){
+        
+        currentvoidingItems.classList.remove("disabledUl");
+        
+        curretulChilds.forEach(ulchild => {
+            ulchild.addEventListener("click", (e)=>{
+             voidItems.appendChild(e.currentTarget);
+            })
+            
+        })
+    }else{
+        currentvoidingItems.classList.add("disabledUl");
+        deleteVoidItems.disabled = true;
+    }
+
+})
+// Monitor
+currentVoidItemsMonitor.observe(currentvoidingItems,{
+    childList: true
+})
+
+
+// Monitor voidingItems
+const voidingItemsMonitor = new MutationObserver(()=>{
+    const modalvoidItems = voidItems.querySelectorAll(".liChild"); 
     const arrayUlVoidingItems = Array.from(modalvoidItems);
-    arrayUlVoidingItems.forEach(ulchild => {
+    const deleteVoidItems = document.querySelector(".deleteVoidItems");
+    if(arrayUlVoidingItems.length > 0){
+        
+        voidItems.classList.remove("disabledUl");
+        deleteVoidItems.disabled = false;
+        modalvoidItems.forEach(ulchild => {
             ulchild.addEventListener("click", (e)=>{
              currentvoidingItems.appendChild(e.currentTarget);
-             
+            })
+            
         })
-    })
-}
+    }else{
+        voidItems.classList.add("disabledUl");
+        deleteVoidItems.disabled = true;
+    }
+})
+
+//Monitor
+voidingItemsMonitor.observe(voidItems, {
+    childList: true
+})
+
+
+} 
+obServer();
+
+
+
 
 // Handle product removes 
 const voidProducts = () => {
     const modalvoidUl = document.querySelector(".voidedItems");
     const modalvoidItems = modalvoidUl.querySelectorAll(".liChild");
 
-    modalvoidItems.forEach(item => {
+   if(modalvoidItems.length > 0 ){
+     modalvoidItems.forEach(item => {
         const productName = item.querySelector("span:nth-child(2)").textContent;
 
         
@@ -364,6 +391,7 @@ const voidProducts = () => {
     // Update the display
     displayListofProducts();
     totalAmount();
+   }
 };
     
 
