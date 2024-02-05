@@ -19,7 +19,7 @@ const product = (productName, ProductPrice) => {
 
 
     displayListofProducts();
-    totalAmount()
+    totalAmount();
 };
 
 
@@ -315,6 +315,12 @@ const monitorProductDisplay = () =>{
               
         })
         
+        }else{
+             changeBtns.forEach(btn =>{
+            
+                btn.disabled = true
+              
+        })
         }
         
     });
