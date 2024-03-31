@@ -51,9 +51,9 @@ router.get('/Requests/productreq.js', (req, res) => {
 });
 
 
-// router.get("/views/javascript/productList.js", (req, res) => {
-//   res.sendFile(path.join(__dirname,  '/',"POS", 'javascript', 'productList.js'));
-// });
+router.get("/javascript/posLogic.js", (req, res) => {
+  res.sendFile(path.join(__dirname,  '/',"POS", 'javascript', 'posLogic.js'));
+}); 
 
 
 module.exports = router;

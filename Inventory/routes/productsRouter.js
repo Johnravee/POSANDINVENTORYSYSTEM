@@ -28,12 +28,7 @@ router.post("/products", upload.single("imageFileData"), (req, res)=>{
         const imageFileData = req.file.buffer;
         const {productName, Categories, stocks, price } = req.body;
         
-        const isSuccess = queryMethods.insertQuery(
-    "pos_products",
-    "product_name, product_price, product_image, product_stocks, product_category",
-    "?, ?, ?, ?, ?",
-    [productName, price, imageFileData, stocks, Categories]
-);
+        const isSuccess = queryMethods.insertProduct([productName, price, imageFileData, stocks, Categories]);
         if(isSuccess){
             console.log("Success");
             return res.status(200).send("success") 

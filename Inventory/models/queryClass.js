@@ -1,10 +1,24 @@
 const conn = require("../connections/milkteamanagementDB");
 
 class queryMethods{
-         insertQuery(tableName, columnName, placeholders, requestBody){
+         insertAccount(requestBody){
          try {
-        const sql = `INSERT INTO ${tableName} (${columnName}) VALUES (${placeholders})`;
+        const sql = `INSERT INTO  company_accounts(employee_id, fullname, email, contact_number, address, job_position, dateofbirth, Invoice_number, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
              conn.query(sql, requestBody);
+             console.log(conn.query(sql, requestBody));
+             return  true;
+    } catch (error) {
+        console.error("inserting error",error);
+        return false
+    }
+    }
+
+
+    insertProduct(requestBody){
+         try {
+        const sql = `INSERT INTO  pos_products(product_name, product_price, product_image, product_stocks, product_category) VALUES(?, ?, ?, ?, ?)`;
+             conn.query(sql, requestBody);
+             console.log(conn.query(sql, requestBody));
              return  true;
     } catch (error) {
         console.error("inserting error",error);

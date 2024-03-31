@@ -20,7 +20,7 @@ router.post("/createaccount", async (req, res) => {
         const fullname = `${firstName} ${middleName} ${lastName}`;
         
         const hash_pass = await bcrypt.hash(password, 15);
-        const isSuccess =  queryMethods.insertQuery("company_accounts","fullname, email, contact_number, address, job_position, dateofbirth, Invoice_number, employee_id, password", "?, ?, ?, ?, ?, ?, ?, ?, ?",[fullname, email, Contact, address, jobPosition, Birthdate, invoiceNumber, employeeID, hash_pass]);
+        const isSuccess =  queryMethods.insertAccount([employeeID ,fullname, email, Contact, address, jobPosition, Birthdate, invoiceNumber, hash_pass]);
         
         if(isSuccess){
             console.log("Success creating account");

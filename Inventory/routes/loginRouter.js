@@ -38,7 +38,8 @@ router.post("/login", async (req, res) => {
             useremployeeid: userData[0].employee_id,
             userinvoicenumber: userData[0].Invoice_number,
             useraddress: userData[0].address
-        };   
+        };  
+        console.log(userData); 
         return res.redirect("/dashboard");
     } else {
         console.error("Invalid Credential!");
